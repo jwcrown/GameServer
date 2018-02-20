@@ -1,0 +1,71 @@
+*{
+    margin: 0px;
+}
+.header{
+    background-color: black;
+    height: 60px;
+    margin-bottom: 20px;
+}
+.header h1{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 20px
+}
+.header a{
+    display: inline-block;
+    color: white;
+    vertical-align: top;
+    margin-top: 35px;
+}
+.lefthead{
+    width: 1450px;
+    display: inline-block;
+}
+.mygames{
+    display: inline-block;
+    border: solid black;
+    border-width: 20px;
+    margin-left: 20px;
+    width: 500px;
+    min-height: 560px;
+    padding: 10px;
+}
+.othergames{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 20px 0px 20px;
+    width: 500px;
+    min-height: 560px;
+    border: solid black;
+    border-width: 20px;
+    padding: 10px;
+    text-align: center;
+
+}
+.rankings{
+    display: inline-block;  
+    vertical-align: top;
+    width: 250px;
+    min-height: 560px;
+    border: solid black;
+    border-width: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+input{
+    margin: 5px 0px;
+}
+table{
+    margin: auto;
+}
+table, th, td {
+    border: 4px solid black;
+    border-collapse: collapse;
+}
+h2{
+    margin-bottom: 5px;
+}
+li{
+    margin: 10px 0px;
+}

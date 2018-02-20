@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'play/css/styles.css' %}" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="header">
+        <div class="lefthead">
+            <img src="{% static ''%}play/img/{{user.icon}}.png" alt="avatar">
+            <h1 style="color: {{user.icon}};">Welcome {{request.session.name}} ({{request.session.username}})</h1>
+        </div>
+        <a href="/logout">Logout</a>
+    </div>
+    <div class="mygames" style="border-color: {{user.icon}};">
+        <h2 style="color: {{user.icon}};">Profile:</h2>
+        <ul>
+            <h4>Member Since: {{ user.created_at }}</h4>
+            <h4>Wins: {{ user.wins }}</h4>
+            <h4> Loses: {{ user.loses }}</h4>
+            <form action="/play/icon" method="post">
+                {% csrf_token %}
+                <h4>Change Icon: <select name="icon">
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="yellow">Yellow</option>
+                </select></h4>
+                <input type="submit" value="Update">
+            </form>
+        </ul>
+        <br>
+        <h2 style="color: {{user.icon}};">My Games:</h2>
+        <table>
+            <tr>
+                <th>Game Name</th>
+                <th>Desc</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for n in my_games %}
+            <tr>
+                <td>{{ n.game_type }}</td>
+                <td>{{ n.game_desc}}</td>
+                <!-- Edit number of players here -->
+                    {% if n.players.all.count < 2 %}
+                        <td>Waiting for player to join...</td>
+                        <td><a href="/play/cancel_join/{{ n.id }}">Cancel</a></td>
+                    {% else %}
+                        {% for i in n.players.all %}
+                            {% if i.id != request.session.id %}
+                                <td>Playing {{ i.username }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td><a href="/{{ n.game_type }}_app/{{ n.id }}">Resume</a></td>
+                    {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        </div>
+        <div class="othergames" style="border-color: {{user.icon}};">
+        <h2 style="color: {{user.icon}};">Create a game:</h2>
+        <form action="/play/new_game" method="post">
+            {% csrf_token %}
+
+            <h4>Game: <select name="game_type">
+                <!-- Insert games here -->
+                <option value="battleship">Battleship</option>
+                <option value="tic-tac-toe">Tic-Tac-Toe</option>
+                <option value="chess">Chess</option>
+            </select></h4>
+
+            <h4>Desc:  <input type="text" name="game_desc"></h4>
+            <input type="submit", value="Create new game!">
+        </form>
+        <br>
+        
+        <h2 style="color: {{user.icon}};">Join Game:</h2>
+        <table style="margin-bottom:15px;">
+            <tr>
+                <th>Username</th>
+                <th>Game Name</th>
+                <th>Desc</th>       
+                <th>Action</th>
+            </tr>
+            {% for n in join_games %}
+            <tr>
+                {% if n.players.count < 2 %}
+                    {% for i in n.players.all %}
+                        <td><a href="/play/display/{{ i.id }}">{{ i.username }}</a></td>
+                        <td>{{ n.game_type}}</td>
+                        <td>{{ n.game_desc}}</td>
+                    {% endfor %}
+                    <td><a href="/play/{{ n.id }}/join">Join</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% if display > 0 %}
+            <div>
+                <h3>Opponent Profile</h3>
+                <img src="{% static ''%}play/img/{{display.icon}}.png" alt="avatar">
+                <h3>{{display.username}}</h3>
+                <h3>W:{{display.wins}} L:{{display.loses}}</h3>
+                <a href="/play/hide">hide</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="rankings" style="border-color: {{user.icon}};">
+        <h2 style="color: {{user.icon}};">Leaderboard</h2>
+        <ol>
+        {% for n in rank %}
+            {% if n.id == request.session.id %}
+            <h3><li>{{ n.username }}</li></h3>
+            {% else %}
+            <h3><li><a href="/play/display/{{ n.id }}">{{ n.username }}</a></li></h3>
+            {% endif %}
+        {% endfor %}
+        </ol>
+        </table>
+    </div>
+</body>
+</html>

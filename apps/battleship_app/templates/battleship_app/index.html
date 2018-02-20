@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'battleship_app/css/styles.css' %}" />
+    <title>Battleship</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <div class="lefthead">
+                <img src="{% static ''%}battleship_app/img/{{user.icon}}.png" alt="avatar">
+                <h1 style="color: {{user.icon}};">{{request.session.name}} ({{request.session.username}})</h1>
+            </div>
+            <a href="/play">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+        <div class="myboard">
+            <h2>My Board</h2>
+            <table>
+                <tr>
+                    <th></th>
+                    <th><h1>1</h1></th>
+                    <th><h1>2</h1></th>
+                    <th><h1>3</h1></th>
+                    <th><h1>4</h1></th>
+                </tr>
+                <tr>
+                    <td><h1>A</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><h1>B</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><h1>C</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><h1>D</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="playerturn">
+            <h3>Next Move</h3>
+            <h3><img src="{% static ''%}battleship_app/img/{{user.icon}}.png" alt="avatar"></h3>
+            <h3>{{request.session.username}}</h3>
+            <h3>Turn: {{game.turn}}</h3>
+            
+        </div>
+
+        <div class="oppboard">
+            {% for n in board %}
+                {% if n.user.id != request.session.id %}
+            <h2>{{n.user.username}}'s Board</h2>
+                {% endif %}
+            {% endfor %}
+            <table>
+                <tr>
+                    <th></th>
+                    <th><h1>1</h1></th>
+                    <th><h1>2</h1></th>
+                    <th><h1>3</h1></th>
+                    <th><h1>4</h1></th>
+                </tr>
+                <tr>
+                    <td><h1>A</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><h1>B</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><h1>C</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><h1>D</h1></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="fire">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" name="coordinates">
+                <input type="submit" value="Fire!!">
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
